@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Potopoto</string>
+
+    <string name="action_contact">Logout.</string>
+    <string name="heading_recent">Terbaru</string>
+    <string name="heading_my_posts">Poto saya</string>
+
+
+</resources>
