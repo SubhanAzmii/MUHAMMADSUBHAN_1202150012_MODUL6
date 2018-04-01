@@ -1,6 +1,7 @@
 package com.example.android.muhammadsubhan_1202150012_modul6;
 
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -16,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,6 +37,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
@@ -43,24 +46,22 @@ import java.util.Map;
 import java.util.UUID;
 
 public class PostFoto extends AppCompatActivity {
-
+    //declar final var
     private static final String TAG = "NewPostActivity";
-
     private static final String REQUIRED = "Required";
-
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
 
-    String imgDecodableString;
 
-    // [START declare_database_ref]
+    // declar DB
 
     private DatabaseReference mDatabase;
     FirebaseStorage storage;
     StorageReference storageReference;
 
 
-    // [END declare_database_ref]
+
+    // declar var
 
     private EditText mTitle;
     private EditText mPostMessage;
@@ -73,20 +74,23 @@ public class PostFoto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_foto);
 
-        //initfirebase
+        //init firebase
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        //init id
         mTitle = findViewById(R.id.title);
         mPostMessage = findViewById(R.id.Post);
         mSubmitButton = findViewById(R.id.fab_submit_post);
         btnChoose = findViewById(R.id.choose);
         imageView = findViewById(R.id.gambar);
 
+        //button on click untuk memilih gambar
         btnChoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //mengunakan fungsi method untuk melakukan pencarian gambar pada galeri
                 choseImage();
                 /*Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI);*/
@@ -98,21 +102,19 @@ public class PostFoto extends AppCompatActivity {
 
 
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
-
             public void onClick(View v) {
-
+                //mengunakan method submit untuk menyimpang gambar yg di pilih pada storage
                 submitPost();
-
             }
-
         });
     }
 
     @RequiresApi
     private void choseImage() {
+        //melakukan inten pada recent galery
         Intent intent = new Intent();
+        //intent pada direktori image
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent,"Select Picture"),PICK_IMAGE_REQUEST);
@@ -124,8 +126,10 @@ public class PostFoto extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == resultCode
                 && data !=null && data.getData() != null)
         {
+            //mengambil data dari galeri
             filePath = data.getData();
             try {
+                //mekaukan pengesetan image pada bitmap
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),filePath);
                 imageView.setImageBitmap(bitmap);
             }catch (IOException e){
@@ -169,13 +173,20 @@ public class PostFoto extends AppCompatActivity {
         final String title = mTitle.getText().toString();
         final String body = mPostMessage.getText().toString();
 
+        //Post post = new Post(title,body);
+
+        //FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        //mDatabase.child(user.getUid()).setValue(post);
+
         if (filePath != null){
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
-
-            StorageReference ref = storageReference.child("image/*" + UUID.randomUUID().toString());
+            //proses upload pada storage
+            StorageReference ref = storageReference.child("image*//*" + UUID.randomUUID().toString());
             ref.putFile(filePath)
+                    //proses upload
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -210,6 +221,7 @@ public class PostFoto extends AppCompatActivity {
             mPostMessage.setError(REQUIRED);
             return;
         }
+
         setEditingEnabled(false);
         Toast.makeText(this, "Posting...", Toast.LENGTH_SHORT).show();
         FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
@@ -247,6 +259,9 @@ public class PostFoto extends AppCompatActivity {
                     }
                 });
     }
+
+
+
     private void setEditingEnabled(boolean b) {
         mTitle.setEnabled(b);
         mPostMessage.setEnabled(b);

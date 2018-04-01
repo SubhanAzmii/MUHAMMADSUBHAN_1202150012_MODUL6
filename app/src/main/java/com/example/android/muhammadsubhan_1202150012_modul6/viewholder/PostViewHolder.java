@@ -11,13 +11,9 @@ import com.example.android.muhammadsubhan_1202150012_modul6.model.Post;
 
 public class PostViewHolder extends RecyclerView.ViewHolder {
     public TextView titleView;
-
     public TextView authorView;
-
     public ImageView starView;
-
     public TextView numStarsView;
-
     public TextView bodyView;
 
 

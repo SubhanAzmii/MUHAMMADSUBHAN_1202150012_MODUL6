@@ -40,16 +40,9 @@ public abstract class PostList extends Fragment {
 
     // [END define_database_reference]
 
-
     // private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
-
     private RecyclerView mRecycler;
-
     private LinearLayoutManager mManager;
-
-
-
-
     public PostList() {
         // Required empty public constructor
     }
@@ -88,7 +81,7 @@ public abstract class PostList extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
 
-/*
+
 
 
         // Set up Layout Manager, reverse layout
@@ -107,7 +100,7 @@ public abstract class PostList extends Fragment {
 
         Query postsQuery = getQuery(mDatabase);
 
-
+/*
 
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Post>()
 
@@ -324,13 +317,8 @@ public abstract class PostList extends Fragment {
 
 
     public String getUid() {
-
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
-
     }
-
-
-
     public abstract Query getQuery(DatabaseReference databaseReference);
 
 }

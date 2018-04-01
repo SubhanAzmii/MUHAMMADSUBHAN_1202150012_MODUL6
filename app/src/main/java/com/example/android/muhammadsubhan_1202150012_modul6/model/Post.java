@@ -5,9 +5,7 @@ import com.google.firebase.database.Exclude;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Kizuna on 4/1/2018.
- */
+
 
 public class Post {
     public String uid;
@@ -16,7 +14,7 @@ public class Post {
     public String body;
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();
-    public Post() {
+    public Post(String title, String body) {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
 
     }
@@ -24,13 +22,9 @@ public class Post {
 
 
     public Post(String uid, String author, String title, String body) {
-
         this.uid = uid;
-
         this.author = author;
-
         this.title = title;
-
         this.body = body;
 
     }

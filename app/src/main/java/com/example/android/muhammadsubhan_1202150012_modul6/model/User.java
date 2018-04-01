@@ -2,9 +2,7 @@ package com.example.android.muhammadsubhan_1202150012_modul6.model;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
-/**
- * Created by Kizuna on 3/30/2018.
- */
+
 
 @IgnoreExtraProperties
 public class User {
